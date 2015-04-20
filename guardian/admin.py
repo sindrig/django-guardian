@@ -66,7 +66,7 @@ class GuardedModelAdminMixin(object):
         # backward compatibility
         method = getattr(
             super(GuardedModelAdminMixin, self), 'get_queryset',
-            getattr(super(GuardedModelAdminMixin, self), 'queryset'))
+            super(GuardedModelAdminMixin, self).queryset)
         qs = method(request)
 
         if request.user.is_superuser:
