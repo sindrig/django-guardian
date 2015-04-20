@@ -64,9 +64,11 @@ class GuardedModelAdminMixin(object):
     def get_queryset(self, request):
         # Prefer the Django >= 1.6 interface but maintain
         # backward compatibility
-        method = getattr(
-            super(GuardedModelAdminMixin, self), 'get_queryset',
-            super(GuardedModelAdminMixin, self).queryset)
+        super_cls = super(GuardedModelAdminMixin, self)
+        if hasattr(super_cls, 'get_queryset'):
+            method = super_cls.get_queryset
+        else:
+            method = super_cls.queryset
         qs = method(request)
 
         if request.user.is_superuser:
